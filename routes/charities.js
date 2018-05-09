@@ -2,15 +2,16 @@ var express = require('express');
 var router = express.Router();
 const knex = require('../knex')
 
+
 router.get('/', (req, res, next) => {
 
-  knex('users')
+  knex('charities')
     .orderBy('id')
-    .then((data) =>{
-      if(data.length < 1){
+    .then((charities) =>{
+      if(charities.length < 1){
         res.sendStatus(404)
       }
-      res.send(data)
+      res.send(charities)
     })
     .catch((err) => next(err))
 })
@@ -19,25 +20,25 @@ router.get('/:id', (req, res, next) => {
 
 	const id = req.params.id
 
-	knex('users')
+	knex('charities')
 		.where('id', id)
-		.then((data) => {
-			if(data.length < 1){
+		.then((charity) => {
+			if(charity.length < 1){
 				res.sendStatus(404)
 			}
-			res.send(data)
+			res.send(charity)
 		})
 })
 
 router.post('/', (req, res, next) => {
 
-	const {is_admin, name, uid} = req.body
-	const newData = {is_admin, name, uid}
+	const {charityInfo, info, linkTitle, title} = req.body
+	const newCharity = {charityInfo, info, linkTitle, title}
 
-   knex('users')
-   .insert(newData)
+   knex('charities')
+   .insert(newCharity)
    .then(() => {
-     res.send(newData);
+     res.send(newCharity);
    })
    .catch((err) => next(err));
 })
@@ -46,21 +47,21 @@ router.patch('/:id', (req, res, next) => {
 
 	const theId = req.params.id
 
-	const {is_admin, name, uid} = req.body
-	const newData = {is_admin, name, uid}
+	const {charityInfo, info, linkTitle, title} = req.body
+	const newCharity = {charityInfo, info, linkTitle, title}
 
-  knex('users')
-    .update(newData)
+  knex('charities')
+    .update(newCharity)
 		.where("id", theId)
 		.then(() => {
 
-			knex('users')
+			knex('charities')
 				.where('id', theId)
-				.then((data) => {
-					if(!data){
+				.then((charity) => {
+					if(!charity){
 						res.sendStatus(404)
 					}
-					res.send(data)
+					res.send(charity)
 				})
 				.catch((err) => next(err));
 	  })
@@ -70,20 +71,21 @@ router.delete('/:id', (req, res, next) => {
 
 	const id = req.params.id
 
-	knex('users')
+	knex('charities')
 		.where('id', id)
 		.first()
-		.then((data) => {
-			if(!data){
+		.then((charities) => {
+			if(!charities){
 				res.sendStatus(404)
 			}
-			knex('users')
+			knex('charities')
 				.del()
 				.where('id', id)
 				.then(() => {
-					res.send(data)
+					res.send(charities)
 				})
 		})
 })
+
 
 module.exports = router;

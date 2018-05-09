@@ -4,13 +4,13 @@ const knex = require('../knex')
 
 router.get('/', (req, res, next) => {
 
-  knex('users')
+  knex('products')
     .orderBy('id')
-    .then((data) =>{
-      if(data.length < 1){
+    .then((products) =>{
+      if(products.length < 1){
         res.sendStatus(404)
       }
-      res.send(data)
+      res.send(products)
     })
     .catch((err) => next(err))
 })
@@ -19,25 +19,25 @@ router.get('/:id', (req, res, next) => {
 
 	const id = req.params.id
 
-	knex('users')
+	knex('products')
 		.where('id', id)
-		.then((data) => {
-			if(data.length < 1){
+		.then((product) => {
+			if(product.length < 1){
 				res.sendStatus(404)
 			}
-			res.send(data)
+			res.send(product)
 		})
 })
 
 router.post('/', (req, res, next) => {
 
-	const {is_admin, name, uid} = req.body
-	const newData = {is_admin, name, uid}
+	const {id, gender, front_img, back_img, price, design, size, stock_quantity} = req.body
+	const newProduct = {id, gender, front_img, back_img, price, design, size, stock_quantity}
 
-   knex('users')
-   .insert(newData)
+   knex('products')
+   .insert(newProduct)
    .then(() => {
-     res.send(newData);
+     res.send(newProduct);
    })
    .catch((err) => next(err));
 })
@@ -46,21 +46,22 @@ router.patch('/:id', (req, res, next) => {
 
 	const theId = req.params.id
 
-	const {is_admin, name, uid} = req.body
-	const newData = {is_admin, name, uid}
+	const {id, gender, front_img, back_img, price, design, size, stock_quantity} = req.body
 
-  knex('users')
-    .update(newData)
+	const newProduct = {id, gender, front_img, back_img, price, design, size, stock_quantity}
+
+  knex('products')
+    .update(newProduct)
 		.where("id", theId)
 		.then(() => {
 
-			knex('users')
+			knex('products')
 				.where('id', theId)
-				.then((data) => {
-					if(!data){
+				.then((product) => {
+					if(!product){
 						res.sendStatus(404)
 					}
-					res.send(data)
+					res.send(product)
 				})
 				.catch((err) => next(err));
 	  })
@@ -70,18 +71,18 @@ router.delete('/:id', (req, res, next) => {
 
 	const id = req.params.id
 
-	knex('users')
+	knex('products')
 		.where('id', id)
 		.first()
-		.then((data) => {
-			if(!data){
+		.then((products) => {
+			if(!products){
 				res.sendStatus(404)
 			}
-			knex('users')
+			knex('products')
 				.del()
 				.where('id', id)
 				.then(() => {
-					res.send(data)
+					res.send(products)
 				})
 		})
 })
