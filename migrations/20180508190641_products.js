@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
 
 	return knex.schema.createTable('products', (table) => {
-		table.increments()
+		table.increments('id')
 		table.varchar('gender')
 		table.varchar('front_img')
 		table.varchar('back_img')
@@ -14,5 +14,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('products')
+  return knex.raw('DROP TABLE products CASCADE')
 };

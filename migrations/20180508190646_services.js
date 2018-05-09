@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
 
 	return knex.schema.createTable('services', (table) => {
-		table.increments()
+		table.increments('id')
 		table.varchar('title')
 		table.varchar('description')
 	})
