@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
 		table.varchar('gender')
 		table.varchar('front_img')
 		table.varchar('back_img')
-		table.integer('price')
+		table.decimal('price', undefined, 2)
 		table.varchar('design')
 		table.varchar('size')
 		table.integer('stock_quantity')

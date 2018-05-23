@@ -7,25 +7,27 @@ router.get('/', (req, res, next) => {
   knex('shopping_carts')
     .orderBy('id')
     .then((data) =>{
-      if(data.length < 1){
-        res.sendStatus(404)
-      }
       res.send(data)
     })
-    .catch((err) => next(err))
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:userId', (req, res, next) => {
 
-	const id = req.params.id
+	const userId = req.params.userId
 
 	knex('shopping_carts')
-		.where('id', id)
+		.where('user_id', userId)
+		.orderBy('id')
 		.then((data) => {
-			if(data.length < 1){
-				res.sendStatus(404)
-			}
-			res.send(data)
+
+			knex('users')
+				.where('id', userId)
+				.first()
+				.then((user) => {
+					data[0].user_id = user
+					console.log(data);
+					res.send(data)
+				})
 		})
 })
 

@@ -15,18 +15,21 @@ router.get('/', (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:uid', (req, res, next) => {
 
-	const id = req.params.id
+	const uid = req.params.uid
 
 	knex('users')
-		.where('id', id)
+		.where('uid', uid)
+		.first()
 		.then((data) => {
 			if(data.length < 1){
-				res.sendStatus(404)
+				res.status(404)
+				res.send(data)
 			}
 			res.send(data)
 		})
+		.catch((err) => next(err))
 })
 
 router.post('/', (req, res, next) => {

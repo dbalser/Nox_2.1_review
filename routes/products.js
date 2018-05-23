@@ -21,6 +21,7 @@ router.get('/:id', (req, res, next) => {
 
 	knex('products')
 		.where('id', id)
+		.first()
 		.then((product) => {
 			if(product.length < 1){
 				res.sendStatus(404)

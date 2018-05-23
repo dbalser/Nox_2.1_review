@@ -30,12 +30,6 @@ router.get('/', (req, res, next) => {
 	allInfo["services"] = data
 
 	//--------------------------------------
-	knex('shopping_carts')
-	.orderBy('id')
-	.then((data) =>{
-	allInfo["shopping_carts"] = data
-
-	//--------------------------------------
 	knex('testimonials')
 	.orderBy('id')
 	.then((data) =>{
@@ -51,7 +45,6 @@ router.get('/', (req, res, next) => {
 	res.send(allInfo)
 	//-------- The End ------------
 
-	})
 	})
 	})
 	})
