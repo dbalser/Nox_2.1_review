@@ -20,12 +20,11 @@ router.get('/:userId', (req, res, next) => {
 		.orderBy('id')
 		.then((data) => {
 
-			knex('users')
-				.where('id', userId)
+			knex('products')
+				.where('id', data[0].product_id)
 				.first()
-				.then((user) => {
-					data[0].user_id = user
-					console.log(data);
+				.then((product) => {
+					data[0].product_id = product
 					res.send(data)
 				})
 		})
