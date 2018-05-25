@@ -15,6 +15,7 @@ var charities = require('./routes/charities');
 var testimonials = require('./routes/testimonials');
 var shopping_carts = require('./routes/shopping_carts');
 var orders = require('./routes/orders');
+var charges = require('./routes/charges');
 
 
 var app = express();
@@ -74,6 +75,7 @@ app.use('/charities', charities);
 app.use('/testimonials', testimonials);
 app.use('/shopping_carts', shopping_carts);
 app.use('/orders', orders);
+app.use('/charges', charges);
 
 
 // catch 404 and forward to error handler
