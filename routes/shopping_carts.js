@@ -19,17 +19,30 @@ router.get('/:userId', (req, res, next) => {
 		.where('user_id', userId)
 		.orderBy('id')
 		.then((data) => {
+
 			if(data.length === 0){
+				console.log('not hit', data);
 				res.send(data)
 			}
 			else {
-				knex('products')
-					.where('id',userId)
-					.first()
-					.then((product) => {
-						data[0].product_id = product
-						res.send(data)
-					})
+
+				let newData = []
+
+				data.forEach((d) => {
+
+					knex('products')
+						.where('id', d.product_id)
+						.first()
+						.then((product) => {
+							
+							d.product_id = product
+							newData.push(d)
+
+							if(newData.length === data.length) {
+								res.send(newData)
+							}
+						})
+				})
 			}
 		})
 })
