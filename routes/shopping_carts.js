@@ -21,7 +21,7 @@ router.get('/:userId', (req, res, next) => {
 		.then((data) => {
 
 			if(data.length === 0){
-				console.log('not hit', data);
+
 				res.send(data)
 			}
 			else {
@@ -34,7 +34,7 @@ router.get('/:userId', (req, res, next) => {
 						.where('id', d.product_id)
 						.first()
 						.then((product) => {
-							
+
 							d.product_id = product
 							newData.push(d)
 
