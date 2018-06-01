@@ -84,23 +84,31 @@ router.patch('/:id', (req, res, next) => {
 	  })
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:user_id', (req, res, next) => {
 
-	const id = req.params.id
-
+	const user_id = req.params.user_id
+	let counter = 0
+	
 	knex('shopping_carts')
-		.where('id', id)
-		.first()
+		.where('user_id', user_id)
 		.then((data) => {
 			if(!data){
 				res.sendStatus(404)
 			}
-			knex('shopping_carts')
-				.del()
-				.where('id', id)
-				.then(() => {
-					res.send(data)
-				})
+			data.forEach((d) => {
+
+				knex('shopping_carts')
+					.del()
+					.where('id', d.id)
+					.then(() => {
+						counter += 1
+
+						if (counter === data.length) {
+							console.log(data);
+							res.send(data)
+						}
+					})
+			})
 		})
 })
 

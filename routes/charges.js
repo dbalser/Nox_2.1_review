@@ -6,7 +6,7 @@ router.post('/', (req, res, next) => {
 
 	const {amount, token, currentUser, email} = req.body
 	const order = {amount, token, currentUser, email}
-	console.log(order.email);
+	
 	const charge = stripe.charges.create({
 		amount: order.amount,
 		currency: "usd",
@@ -14,11 +14,11 @@ router.post('/', (req, res, next) => {
 		receipt_email: order.email,
 		description: "you bought one dildo"
 	}, (err, charge) => {
+
 		if(!charge.paid) {
 			res.sendStatus(400)
 		}
 		else{
-			console.log(charge);
 			res.sendStatus(200)
 		}
 	})
