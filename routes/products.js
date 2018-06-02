@@ -45,6 +45,27 @@ router.post('/', (req, res, next) => {
    .catch((err) => next(err));
 })
 
+router.patch('/patchAll', (req, res, next) => {
+
+	const subtractionInfo = req.body.subArr
+	const allIds = subtractionInfo.map((data) => data.product_id)
+	knex('products')
+		.whereIn('id', allIds)
+		.then((products) => {
+			//these need too be orders the same ...
+			console.log(subtractionInfo, "all subinfo");
+			console.log(products, "prodsssss");
+			const newProds = products.map((prod, i) => {
+				//... so you can subtrat like this
+				prod.stock_quantity -= subtractionInfo[i]
+				return prod
+			})
+			res.send()
+		})
+
+})
+ // { product_id: 1, quantity_to_subtract: 2, c_prod_Q: 979 },
+ //    { product_id: 2, quantity_to_subtract: 1, c_prod_Q: 994 }
 router.patch('/:id', (req, res, next) => {
 
 	const theId = req.params.id
@@ -52,29 +73,6 @@ router.patch('/:id', (req, res, next) => {
 	const {id, gender, front_img, back_img, price, design, size, stock_quantity} = req.body
 
 	const newProduct = {id, gender, front_img, back_img, price, design, size, stock_quantity}
-
-  knex('products')
-    .update(newProduct)
-		.where("id", theId)
-		.then(() => {
-
-			knex('products')
-				.where('id', theId)
-				.then((product) => {
-					if(!product){
-						res.sendStatus(404)
-					}
-					res.send(product)
-				})
-				.catch((err) => next(err));
-	  })
-})
-
-router.patch('/patchAll', (req, res, next) => {
-
-	const subtractionInfo = [req.body.subArr]
-	
-	console.log(subtractionInfo);
 
   knex('products')
     .update(newProduct)

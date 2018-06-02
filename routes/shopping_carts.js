@@ -84,11 +84,11 @@ router.patch('/:id', (req, res, next) => {
 	  })
 })
 
-router.delete('/:user_id', (req, res, next) => {
+router.delete('/deleteAll/:user_id', (req, res, next) => {
 
 	const user_id = req.params.user_id
 	let counter = 0
-	
+
 	knex('shopping_carts')
 		.where('user_id', user_id)
 		.then((data) => {
@@ -104,11 +104,30 @@ router.delete('/:user_id', (req, res, next) => {
 						counter += 1
 
 						if (counter === data.length) {
-							console.log(data);
 							res.send(data)
 						}
 					})
 			})
+		})
+})
+
+router.delete('/:id', (req, res, next) => {
+
+	const id = req.params.id
+
+	knex('shopping_carts')
+		.where('id', id)
+		.first()
+		.then((data) => {
+			if(!data){
+				res.sendStatus(404)
+			}
+			knex('shopping_carts')
+				.del()
+				.where('id', id)
+				.then(() => {
+					res.send(data)
+				})
 		})
 })
 
