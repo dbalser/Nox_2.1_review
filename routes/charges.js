@@ -4,9 +4,18 @@ var stripe = require("stripe")("sk_test_oeXe9v0Dx57ooSxUJCMJzcAs");
 
 router.post('/', (req, res, next) => {
 
-	const {amount, token, currentUser, email} = req.body
-	const order = {amount, token, currentUser, email}
-	
+
+	const {amount, token, currentUser, email, cart} = req.body
+	const order = {amount, token, currentUser, email, cart}
+	// console.log(order.currentUser, order.cart);
+	// knex('shopping_carts')
+	// 	.where('user_id', userId)
+	// 	.then((data) => {
+	// 		console.log(data, "________");
+	// 		res.send(data)
+	// 	})
+	// 	.catch((err) => next(err));
+
 	const charge = stripe.charges.create({
 		amount: order.amount,
 		currency: "usd",
