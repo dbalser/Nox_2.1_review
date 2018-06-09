@@ -76,7 +76,7 @@ router.patch('/patchAll', (req, res, next) => {
 
 						const lastIndex = products.length - 1
 						if (prod.id === products[lastIndex].id) {
-							res.send(data)
+							res.sendStatus(200)
 						}
 					})
 			})
