@@ -47,20 +47,39 @@ router.post('/', (req, res, next) => {
 
 router.patch('/patchAll', (req, res, next) => {
 
+	//this orders them by id
+	const compare = (a,b) => {
+	  if (a.product_id < b.product_id)
+	    return -1;
+	  if (a.product_id > b.product_id)
+	    return 1;
+	  return 0;
+	}
 	const subtractionInfo = req.body.subArr
+	subtractionInfo.sort(compare);
 	const allIds = subtractionInfo.map((data) => data.product_id)
+
 	knex('products')
 		.whereIn('id', allIds)
+		.orderBy("id")
 		.then((products) => {
 			//these need too be orders the same ...
-			console.log(subtractionInfo, "all subinfo");
-			console.log(products, "prodsssss");
-			const newProds = products.map((prod, i) => {
+			// console.log(subtractionInfo, "all subinfo");
+			// console.log(products, "prodsssss");
+			products.forEach((prod, i) => {
 				//... so you can subtrat like this
-				prod.stock_quantity -= subtractionInfo[i]
-				return prod
+				prod.stock_quantity -= subtractionInfo[i].quantity_to_subtract
+				knex('products')
+			    .update(prod)
+					.where("id", prod.id)
+					.then((data) => {
+
+						const lastIndex = products.length - 1
+						if (prod.id === products[lastIndex].id) {
+							res.send(data)
+						}
+					})
 			})
-			res.send()
 		})
 
 })
