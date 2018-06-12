@@ -7,14 +7,14 @@ router.post('/', (req, res, next) => {
 
 	const {amount, token, currentUser, email, cart} = req.body
 	const order = {amount, token, currentUser, email, cart}
-	// console.log(order.currentUser, order.cart);
+	console.log(typeof order.currentUser);
+
 	// knex('shopping_carts')
-	// 	.where('user_id', userId)
-	// 	.then((data) => {
-	// 		console.log(data, "________");
-	// 		res.send(data)
-	// 	})
-	// 	.catch((err) => next(err));
+  //   .orderBy('id')
+  //   .then((data) =>{
+	// 		console.log(data);
+  //     res.send(data)
+  //   })
 
 	const charge = stripe.charges.create({
 		amount: order.amount,
