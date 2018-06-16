@@ -10,29 +10,6 @@ router.post('/', (req, res, next) => {
 	const {amount, token, currentUser, email, cart} = req.body
 	const order = {amount, token, currentUser, email, cart}
 
-	checkAmount(order) // this is calculating correctly. must times by 100 tho
-
-	res.sendStatus(404)
-
-	// const charge = stripe.charges.create({
-	// 	amount: order.amount,
-	// 	currency: "usd",
-	// 	source: order.token,
-	// 	receipt_email: order.email,
-	// 	description: "you bought one dildo"
-	// }, (err, charge) => {
-	//
-	// 	if(!charge.paid) {
-	// 		res.sendStatus(400)
-	// 	}
-	// 	else{
-	// 		res.sendStatus(200)
-	// 	}
-	// })
-
-})
-
-function checkAmount(order) {
 	//this orders them by id
 	const compare = (a,b) => {
 	  if (a.product_id.id < b.product_id.id)
@@ -41,9 +18,8 @@ function checkAmount(order) {
 	    return 1;
 	  return 0;
 	}
-	const cart = order.cart.sort(compare);
-
-	let prodIds = order.cart.map((item) => item.product_id.id)
+	const orderedCart = order.cart.sort(compare);
+	const prodIds = order.cart.map((item) => item.product_id.id)
 
 	knex('products')
 		.whereIn('id', prodIds)
@@ -55,12 +31,42 @@ function checkAmount(order) {
       }
 
 			let realPrice = data.reduce((accumulator, item, index) => {
-				return accumulator + ( Number(item.price) * cart[index].quantity )
+				return accumulator + ( Number(item.price) * orderedCart[index].quantity )
 			}, 0)
 
-			console.log(realPrice, order.amount);
+			let shippingAmount = realPrice + 4.99
+			let totalAmount = ((shippingAmount * .07) + shippingAmount).toFixed(2) * 100
+
+			if(totalAmount === order.amount){
+
+				const charge = stripe.charges.create({
+					amount: order.amount,
+					currency: "usd",
+					source: order.token,
+					receipt_email: order.email,
+					description: "you bought one dildo"
+				}, (err, charge) => {
+
+					if(!charge.paid) {
+						res.sendStatus(400)
+					}
+					else{
+						res.sendStatus(200)
+					}
+				})
+			}
+			else {
+				res.sendStatus(400)
+			}
     })
-		return ""
+
+
+
+
+})
+
+function checkAmount(order) {
+
 }
 
 module.exports = router
