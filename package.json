@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "knex": "knex",
-    "nodemon": "node app.js",
+    "node": "node app.js",
     "heroku-postbuild": "knex migrate:rollback; knex migrate:latest;"
   },
   "dependencies": {
