@@ -6,7 +6,7 @@
     "start": "nodemon ./bin/www",
     "knex": "knex",
     "node": "node app.js",
-    "heroku-postbuild": "knex migrate:rollback; knex migrate:latest;"
+    "heroku-postbuild": "knex migrate:latest;"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
