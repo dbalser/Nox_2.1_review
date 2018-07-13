@@ -20,6 +20,10 @@ var charges = require('./routes/charges');
 
 var app = express();
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 // Add headers
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", 'http://nox.surge.sh/');
@@ -28,10 +32,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     next();
 });
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
