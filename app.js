@@ -24,9 +24,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var cors = require('cors');
-// use it before all route definitions
-app.option(cors());
+// var cors = require('cors');
+// // use it before all route definitions
+// app.option(cors());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
