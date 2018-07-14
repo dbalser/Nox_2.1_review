@@ -3,7 +3,7 @@ var router = express.Router();
 const knex = require('../knex')
 
 router.get('/', (req, res, next) => {
-
+console.error("ddddd bug");
   knex('users')
     .orderBy('id')
     .then((data) =>{
