@@ -10,6 +10,12 @@ router.post('/', (req, res, next) => {
 	const {amount, token, currentUser, email, cart} = req.body
 	const order = {amount, token, currentUser, email, cart}
 
+	order.cart.forEach((item, i) => {
+
+		//this collects information to put into orders table
+		order.description += `${item.quantity}, ${item.product_id.gender}, ${item.product_id.size}, ${item.product_id.design} | `
+	})
+
 	//this orders them by id
 	const compare = (a,b) => {
 	  if (a.product_id.id < b.product_id.id)
@@ -44,7 +50,7 @@ router.post('/', (req, res, next) => {
 					currency: "usd",
 					source: order.token,
 					receipt_email: order.email,
-					description: "you bought one dildo"
+					description: `Thank You, You have bought -> ${order.description}`
 				}, (err, charge) => {
 
 					if(!charge.paid) {
