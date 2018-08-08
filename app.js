@@ -28,7 +28,7 @@ app.set('view engine', 'ejs');
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'https://noxfit.com', 'https://noxfit.com/', 'https://noxfit.com/Services', 'https://noxfit.com/Aparel', 'https://noxfit.com/AboutUs', 'https://noxfit.com/#close' );
+    res.setHeader('Access-Control-Allow-Origin', 'https://noxfit.com', 'https://noxfit.com/', 'https://noxfit.com/Services', 'https://noxfit.com/Aparel', 'https://noxfit.com/AboutUs', 'https://noxfit.com/#close', 'https://noxfit.com/Admin', 'https://noxfit.com/Admin/PageEdit', 'https://noxfit.com/Admin/Invetory' );
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
