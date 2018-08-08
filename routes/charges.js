@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var stripe = require("stripe")("sk_test_oeXe9v0Dx57ooSxUJCMJzcAs")
+var stripe = require("stripe")(process.env.STRIPE_KEY)
 const knex = require('../knex')
 
 
